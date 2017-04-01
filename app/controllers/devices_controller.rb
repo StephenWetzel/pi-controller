@@ -6,7 +6,4 @@ class DevicesController < ApplicationController
   def show
     render json: Device.first(device_guid: params[:device_guid]).to_json, status: :ok
   end
-
-
-
 end
