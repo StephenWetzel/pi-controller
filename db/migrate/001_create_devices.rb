@@ -1,19 +1,72 @@
 Sequel.migration do
   up do
-    create_table :devices do
-      String :device_guid, size: 32, primary_key: true
-      String :device_name, text: true
-      String :device_description, text: true
+    create_table :states do
+      String :state_code, size: 32, primary_key: true
+      String :state_name, text: true
       DateTime :updated_at
-      DateTime :created_at
+      DateTime :created_at, null: false
     end
 
+    create_table :events do
+      String :event_code, size: 32, primary_key: true
+      String :event_name, text: true
+      DateTime :updated_at
+      DateTime :created_at, null: false
+    end
 
-    devices = Sequel::Model.db[:devices]
-    devices.insert(device_guid: "abc", device_name: "Cat", created_at: Time.current, updated_at: Time.current)
+    create_table :workflows do
+      primary_key :workflow_id
+      String :workflow_name, size: 64, null: false
+      String :from_state, size: 32, null: false
+      String :to_state, size: 32, null: false
+      String :event_code, size: 32, null: false
+      DateTime :updated_at
+      DateTime :created_at, null: false
+
+      foreign_key [:from_state], :states, name: 'workflows_from_state_fkey'
+      foreign_key [:to_state], :states, name: 'workflows_to_state_fkey'
+      foreign_key [:event_code], :events, name: 'workflows_events_fkey'
+    end
+
+    create_table :devices do
+      String :device_guid, size: 64, primary_key: true
+      String :device_name, text: true, null: false
+      String :device_description, text: true
+      String :state_code, size: 32, null: false
+      Integer :workflow_id, null: false
+      DateTime :updated_at
+      DateTime :created_at, null: false
+
+      foreign_key [:workflow_id], :workflows, name: 'devices_workflows_fkey'
+    end
+
+    create_table :controllers do
+      String :controller_guid, size: 64, primary_key: true
+      String :controller_name, text: true, null: false
+      String :device_description, text: true
+      DateTime :updated_at
+      DateTime :created_at, null: false
+    end
+
+    create_table :device_controllers do
+      primary_key :device_controller_id
+      String :controller_guid, size: 64, null: false
+      String :device_guid, size: 64, null: false
+      DateTime :updated_at
+      DateTime :created_at, null: false
+
+      index :controller_guid
+      foreign_key [:controller_guid], :controllers, name: 'device_controllers_controllers_fkey'
+      foreign_key [:device_guid], :devices, name: 'device_controllers_devices_fkey'
+    end
   end
 
   down do
+    drop_table? :device_controllers
+    drop_table? :controllers
     drop_table? :devices
+    drop_table? :workflows
+    drop_table? :events
+    drop_table? :states
   end
 end
