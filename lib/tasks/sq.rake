@@ -3,7 +3,7 @@ namespace :migrate do
   # rake migrate:to[004]
   task :to, [:migration_number] => :environment do |t, args|
     current_version = Sequel::Model.db[:schema_info].first[:version]
-    new_version = new_version.to_i
+    new_version = args[:migration_number].to_i
     Rails.logger.info "Going from #{current_version} to #{new_version}"
     if new_version < current_version
       Rails.logger.info "Migrating UP from #{current_version} to #{new_version}"
