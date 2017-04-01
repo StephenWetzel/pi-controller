@@ -5,8 +5,9 @@ class DevicesController < ApplicationController
 
   def show
     message = "TEST message from DevicesController #{params[:device_guid]}"
-    ActionCable.server.broadcast 'messages', {message: message}
-
+    Rails.logger.info "Message: #{message}"
+    connection_count = ActionCable.server.broadcast 'messages', {message: message}
+    Rails.logger.info "Broadcasted to #{connection_count} connections"
     render json: Device.first(device_guid: params[:device_guid]), status: :ok
   end
 end

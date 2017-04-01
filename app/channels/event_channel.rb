@@ -8,7 +8,9 @@ class EventChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def signal
-    ActionCable.server.broadcast('messages', message: "TEST")
+  def signal(data)
+    message = data['message']
+    Rails.logger.info "SIGNAL: #{message}"
+    # ActionCable.server.broadcast('messages', message: "TEST: #{message}")
   end
 end

@@ -36,6 +36,12 @@ Rails.application.configure do
   config.logger = Logger.new(STDOUT)
   config.log_level = :debug
 
+  # Mount Action Cable outside main process or domain
+  # config.action_cable.mount_path = nil
+  # config.action_cable.url = 'wss://example.com/cable'
+  # config.action_cable.allowed_request_origins = ['http://example.com', 'localhost', '127.0.0.1', '', ' ', /.+/]
+  config.action_cable.disable_request_forgery_protection = true
+
   # Raises error for missing translations
   # config.action_view.raise_on_missing_translations = true
 
