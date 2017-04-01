@@ -96,6 +96,7 @@ GEM
     rb-fsevent (0.9.8)
     rb-inotify (0.9.8)
       ffi (>= 0.5.0)
+    redis (3.3.3)
     sequel (4.44.0)
     sequel-rails (0.9.14)
       actionpack (>= 3.2.0)
@@ -134,6 +135,7 @@ DEPENDENCIES
   pg
   puma (~> 3.0)
   rails (~> 5.0.2)
+  redis (~> 3.0)
   sequel
   sequel-rails
   shog
