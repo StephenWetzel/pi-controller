@@ -5,4 +5,4 @@ development:
   pool: 5
   username: pi
   password: raspberry
-
+  url: <%= ENV['DATABASE_URL'] %>
