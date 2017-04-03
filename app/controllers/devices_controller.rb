@@ -20,7 +20,6 @@ class DevicesController < ApplicationController
   def update # Update a specific device
     device_guid = params[:id]
     Rails.logger.info "Updating device #{device_guid} with params #{params.to_json}"
-    #puts "Device params: " + device_params
     device = Device.where(device_guid: device_guid).update(
       device_name: params[:device_name],
       device_description: params[:device_description],
@@ -38,6 +37,7 @@ class DevicesController < ApplicationController
 
   def event # send event to device
     Sequel::Model.db.transaction do
+      params.permit(:event_code)
       device_guid = params[:id]
       request_dt = Time.current
       device = Device.first(device_guid: device_guid)
