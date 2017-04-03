@@ -1,6 +1,5 @@
 class EventChannel < ApplicationCable::Channel
   def subscribed
-    # stream_from "some_channel"
     stream_from 'messages'
   end
 
@@ -8,9 +7,13 @@ class EventChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
-  def signal(data)
-    message = data['message']
-    Rails.logger.info "SIGNAL: #{message}"
-    # ActionCable.server.broadcast('messages', message: "TEST: #{message}")
+  def response(data)
+    response_dt = data['response_dt']
+    response = data['response']
+    event_log_id = data['event_log_id']
+    Rails.logger.info "RESPONSE: #{data}"
+    sleep(0.1) # Concurrency, how does it work?
+    EventLog.where(event_log_id: event_log_id).update(response_dt: response_dt, response: response)
+    return true
   end
 end

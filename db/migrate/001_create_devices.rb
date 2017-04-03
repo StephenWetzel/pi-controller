@@ -24,6 +24,7 @@ Sequel.migration do
       DateTime :updated_at
       DateTime :created_at, null: false
 
+      unique [:workflow_name, :from_state]
       foreign_key [:from_state], :states, name: 'workflows_from_state_fkey'
       foreign_key [:to_state], :states, name: 'workflows_to_state_fkey'
       foreign_key [:event_code], :events, name: 'workflows_events_fkey'
@@ -65,7 +66,6 @@ Sequel.migration do
       primary_key :event_log_id
       String :event_code, size: 32, null: false
       String :device_guid, size: 64, null: false
-      String :controller_guid, size: 64, null: false
       DateTime :request_dt
       DateTime :response_dt
       String :response, size: 32
@@ -73,9 +73,8 @@ Sequel.migration do
       DateTime :created_at, null: false
 
       index :request_dt
-      index [:device_guid, :controller_guid]
+      index :device_guid
       foreign_key [:event_code], :events, name: 'event_logs_events_fkey'
-      foreign_key [:controller_guid], :controllers, name: 'event_logs_controllers_fkey'
       foreign_key [:device_guid], :devices, name: 'event_logs_devices_fkey'
     end
   end

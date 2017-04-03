@@ -58,14 +58,13 @@ Sequel.migration do
       primary_key :event_log_id
       foreign_key :event_code, :events, :type=>"character varying(32)", :null=>false, :key=>[:event_code]
       foreign_key :device_guid, :devices, :type=>"character varying(64)", :null=>false, :key=>[:device_guid]
-      foreign_key :controller_guid, :controllers, :type=>"character varying(64)", :null=>false, :key=>[:controller_guid]
       column :request_dt, "timestamp without time zone"
       column :response_dt, "timestamp without time zone"
       column :response, "character varying(32)"
       column :updated_at, "timestamp without time zone"
       column :created_at, "timestamp without time zone", :null=>false
       
-      index [:device_guid, :controller_guid]
+      index [:device_guid]
       index [:request_dt]
     end
     

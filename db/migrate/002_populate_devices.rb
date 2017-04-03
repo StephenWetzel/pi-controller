@@ -14,7 +14,7 @@ Sequel.migration do
 
     devices = Sequel::Model.db[:devices]
     device_guid = SecureRandom.uuid
-    devices.insert(device_guid: device_guid, device_name: "Cat Laser", workflow_name: 'Single', state_code: "ON", created_at: Time.current)
+    devices.insert(device_guid: device_guid, device_name: "Laser", workflow_name: 'Single', state_code: "ON", created_at: Time.current)
 
     controllers = Sequel::Model.db[:controllers]
     controller_guid = SecureRandom.uuid

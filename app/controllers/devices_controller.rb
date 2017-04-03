@@ -37,12 +37,23 @@ class DevicesController < ApplicationController
   end
 
   def event # send event to device
-    device_guid = params[:id]
-    message = "TEST message from DevicesController #{device_guid}"
-    Rails.logger.info "Message: #{message}"
-    connection_count = ActionCable.server.broadcast 'messages', {message: message}
-    Rails.logger.info "Broadcasted to #{connection_count} connections"
-    render json: Device.first(device_guid: device_guid), status: :ok
+    Sequel::Model.db.transaction do
+      device_guid = params[:id]
+      request_dt = Time.current
+      device = Device.first(device_guid: device_guid)
+      workflow = Workflow.where(workflow_name: device[:workflow_name], from_state: device[:state_code]).first
+      event_log_id = EventLog.create(event_code: params[:event_code], device_guid: device_guid, request_dt: Time.current)[:event_log_id]
+      connection_count = ActionCable.server.broadcast 'messages', {
+        device_guid: device_guid,
+        event_code: params[:event_code],
+        request_dt: request_dt,
+        event_log_id: event_log_id,
+        state_code: workflow[:to_state]
+      }
+      Rails.logger.info "Broadcasted to #{connection_count} connections"
+      
+      render json: Device.first(device_guid: device_guid), status: :ok
+    end
   end
 
   private

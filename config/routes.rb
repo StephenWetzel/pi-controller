@@ -4,9 +4,10 @@ Rails.application.routes.draw do
     scope '/v1' do
       resources :devices do
         member do
-          get 'event'
+          get 'event/:event_code', action: :event
         end
       end
+      resources :event_logs
     end
   end
 
