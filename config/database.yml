@@ -1,8 +1,2 @@
 development:
-  adapter: postgresql
-  encoding: unicode
-  database: pi_controller_dev
-  pool: 5
-  username: pi
-  password: raspberry
   url: <%= ENV['DATABASE_URL'] %>

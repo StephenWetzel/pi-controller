@@ -6,7 +6,6 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '~> 5.0.2'
 # Use Puma as the app server
@@ -29,8 +28,8 @@ gem 'sequel'
 gem 'sequel-rails'
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug', platform: :mri
+  gem 'dotenv-rails' # This has to be listed before any gem the requires acces to .env file
+  gem 'byebug', platform: :mri # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'shog' # colorful logs
 end
 
