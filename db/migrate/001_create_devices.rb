@@ -14,6 +14,7 @@ Sequel.migration do
       DateTime :created_at, null: false
     end
 
+
     create_table :workflows do
       primary_key :workflow_id
       String :workflow_name, size: 64, null: false
@@ -33,11 +34,11 @@ Sequel.migration do
       String :device_name, text: true, null: false
       String :device_description, text: true
       String :state_code, size: 32, null: false
-      Integer :workflow_id, null: false
+      String :workflow_name, size: 64, null: false
       DateTime :updated_at
       DateTime :created_at, null: false
 
-      foreign_key [:workflow_id], :workflows, name: 'devices_workflows_fkey'
+      # foreign_key [:workflow_name], :workflows, name: 'devices_workflows_fkey', key: :workflow_name
     end
 
     create_table :controllers do
@@ -59,9 +60,28 @@ Sequel.migration do
       foreign_key [:controller_guid], :controllers, name: 'device_controllers_controllers_fkey'
       foreign_key [:device_guid], :devices, name: 'device_controllers_devices_fkey'
     end
+
+    create_table :event_logs do
+      primary_key :event_log_id
+      String :event_code, size: 32, null: false
+      String :device_guid, size: 64, null: false
+      String :controller_guid, size: 64, null: false
+      DateTime :request_dt
+      DateTime :response_dt
+      String :response, size: 32
+      DateTime :updated_at
+      DateTime :created_at, null: false
+
+      index :request_dt
+      index [:device_guid, :controller_guid]
+      foreign_key [:event_code], :events, name: 'event_logs_events_fkey'
+      foreign_key [:controller_guid], :controllers, name: 'event_logs_controllers_fkey'
+      foreign_key [:device_guid], :devices, name: 'event_logs_devices_fkey'
+    end
   end
 
   down do
+    drop_table? :event_logs
     drop_table? :device_controllers
     drop_table? :controllers
     drop_table? :devices

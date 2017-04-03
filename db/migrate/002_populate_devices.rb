@@ -8,11 +8,13 @@ Sequel.migration do
     events.insert(event_code: "GO", event_name: "Go", created_at: Time.current)
 
     workflows = Sequel::Model.db[:workflows]
-    basic_workflow_id = workflows.insert(workflow_name: "Basic", from_state: "ON", to_state: "OFF", event_code: "GO", created_at: Time.current)
+    workflows.insert(workflow_name: "Single", from_state: "ON", to_state: "ON", event_code: "GO", created_at: Time.current)
+    workflows.insert(workflow_name: "Basic", from_state: "ON", to_state: "OFF", event_code: "GO", created_at: Time.current)
+    workflows.insert(workflow_name: "Basic", from_state: "OFF", to_state: "ON", event_code: "GO", created_at: Time.current)
 
     devices = Sequel::Model.db[:devices]
     device_guid = SecureRandom.uuid
-    devices.insert(device_guid: device_guid, device_name: "Cat Laser", workflow_id: basic_workflow_id, state_code: "ON", created_at: Time.current)
+    devices.insert(device_guid: device_guid, device_name: "Cat Laser", workflow_name: 'Single', state_code: "ON", created_at: Time.current)
 
     controllers = Sequel::Model.db[:controllers]
     controller_guid = SecureRandom.uuid
@@ -23,11 +25,11 @@ Sequel.migration do
   end
 
   down do
-    Sequel::Model.db[:device_controllers].truncate
-    Sequel::Model.db[:controllers].truncate
-    Sequel::Model.db[:devices].truncate
-    Sequel::Model.db[:workflows].truncate
-    Sequel::Model.db[:events].truncate
-    Sequel::Model.db[:states].truncate
+    # Sequel::Model.db[:device_controllers].truncate
+    # Sequel::Model.db[:controllers].truncate
+    # Sequel::Model.db[:devices].truncate
+    # Sequel::Model.db[:workflows].truncate
+    # Sequel::Model.db[:events].truncate
+    # Sequel::Model.db[:states].truncate
   end
 end
