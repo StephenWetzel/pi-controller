@@ -51,14 +51,13 @@ class DevicesController < ApplicationController
         state_code: workflow[:to_state]
       }
       Rails.logger.info "Broadcasted to #{connection_count} connections"
-      
-      render json: Device.first(device_guid: device_guid), status: :ok
+      render json: EventLog.first(event_log_id: event_log_id), status: :ok
     end
   end
 
   private
 
   def device_params
-    params.permit(:device_name, :device_description, :workflow_name, :state_code)
+    params.permit(:device_guid, :device_name, :device_description, :workflow_name, :state_code)
   end
 end
