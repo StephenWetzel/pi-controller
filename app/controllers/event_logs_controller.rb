@@ -1,6 +1,6 @@
 class EventLogsController < ApplicationController
   def index
-    render json: EventLog.all.reverse, status: :ok
+    render json: EventLog.reverse_order(:request_dt).all, status: :ok
   end
 
   def create
@@ -16,6 +16,10 @@ class EventLogsController < ApplicationController
   end
 
   def destroy
-    Rails.logger.warn "Create event log"
+    Rails.logger.warn "Delete event log"
+  end
+
+  def get_count
+    render json: EventLog.reverse_order(:request_dt).limit(params[:event_count]).all, status: :ok
   end
 end

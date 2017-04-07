@@ -7,7 +7,11 @@ Rails.application.routes.draw do
           get 'event/:event_code', action: :event
         end
       end
-      resources :event_logs
+      resources :event_logs do
+        collection do
+          get ':event_count', action: :get_count
+        end
+      end
     end
   end
 
