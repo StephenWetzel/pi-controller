@@ -13,7 +13,7 @@ class EventChannel < ApplicationCable::Channel
     event_log_id = data['event_log_id']
     Rails.logger.info "RESPONSE: #{data}"
     sleep(0.1) # Concurrency, how does it work?
-    EventLog.where(event_log_id: event_log_id).update(response_dt: response_dt, response: response)
+    EventLog.where(event_log_id: event_log_id).update(response_dt: Time.parse(response_dt).utc, response: response)
     return true
   end
 end
