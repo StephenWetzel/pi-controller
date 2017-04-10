@@ -12,6 +12,10 @@ Rails.application.routes.draw do
           get ':event_count', action: :get_count
         end
       end
+      resources :states
+      resources :workflows
+      resources :controllers
+      resources :events
     end
   end
 

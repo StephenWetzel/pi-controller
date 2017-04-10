@@ -14,7 +14,6 @@ Sequel.migration do
       DateTime :created_at, null: false
     end
 
-
     create_table :workflows do
       primary_key :workflow_id
       String :workflow_name, size: 64, null: false
@@ -45,7 +44,7 @@ Sequel.migration do
     create_table :controllers do
       String :controller_guid, size: 64, primary_key: true
       String :controller_name, text: true, null: false
-      String :device_description, text: true
+      String :controller_description, text: true
       DateTime :updated_at
       DateTime :created_at, null: false
     end

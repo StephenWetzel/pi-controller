@@ -3,7 +3,7 @@ Sequel.migration do
     create_table(:controllers) do
       column :controller_guid, "character varying(64)", :null=>false
       column :controller_name, "text", :null=>false
-      column :device_description, "text"
+      column :controller_description, "text"
       column :updated_at, "timestamp without time zone"
       column :created_at, "timestamp without time zone", :null=>false
       
@@ -76,6 +76,8 @@ Sequel.migration do
       foreign_key :event_code, :events, :type=>"character varying(32)", :null=>false, :key=>[:event_code]
       column :updated_at, "timestamp without time zone"
       column :created_at, "timestamp without time zone", :null=>false
+      
+      index [:workflow_name, :from_state], :name=>:workflows_workflow_name_from_state_key, :unique=>true
     end
   end
 end
