@@ -31,6 +31,25 @@ class ControllersController < ApplicationController
     Controller.where(controller_guid: controller_guid).delete
   end
 
+  def connections
+    connection_count = ActionCable.server.connections.length
+    active_count = ActionCable.server.connections.select(&:beat).count
+    Rails.logger.info "There are #{connection_count} connections"
+    render json: {connection_count: connection_count, active_count: active_count}, status: :ok
+  end
+
+  def connections_test
+    connection_count = ActionCable.server.broadcast 'messages', {}
+    Rails.logger.info "Broadcasted to #{connection_count} connections"
+    render json: {count: connection_count}, status: :ok
+  end
+
+  def connections_details
+    connection_details = ActionCable.server.open_connections_statistics.reverse
+    Rails.logger.info "There are #{connection_details} connections"
+    render json: connection_details, status: :ok
+  end
+
   private
 
   def controller_params
