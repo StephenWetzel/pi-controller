@@ -2,7 +2,7 @@ pi-controller
 =========
 
 ## Intro
-Uses a Raspberry Pi to control devices.  The idea here is to create a basic API that will relay commands to Raspberry Pis.  The Pis are have their GPIO pins physically wired to perform some task when they receive the command.  None of the code in this project is specific to Pis, its just and API for accepting commands and they broadcasting them out on websockets.
+Uses a Raspberry Pi to control devices.  The idea here is to create a basic API that will relay commands to Raspberry Pis.  The Pis have their GPIO pins physically wired to perform some task when they receive the command.  None of the code in this project is specific to Pis, it's just an API for accepting commands and then broadcasting them out on websockets.
 
 [This is my client project that I run on the actual Pi](https://github.com/StephenWetzel/pi-client).
 
@@ -11,7 +11,7 @@ You can view a list of available devices at /api/v1/devices.  Find the GUID of t
 
 ## Concepts
 * **Devices** - Devices are individual objects you want to control.  In my basic use case, it's something with a button that I have wired a transistor to so I can simulate button presses.
-* **Controllers** - Controllers are essentially Pis.  They are clients to this API and listen for broadcasted events and trigger devices accordingly.  In theory one controller could controller multiple devices, although in practice it'll generally be 1:1.
+* **Controllers** - Controllers are essentially Pis.  They are clients to this API and listen for broadcasted events and trigger devices accordingly.  In theory one controller could control multiple devices, although in practice it'll generally be 1:1.
 * **States** - States represent the current state of a device.  Generally things like on/off.
 * **Events** - These represent the trigger to transition between states.  Something as simple as "GO" or "TURN_ON".
 * **Workflows** - These combine states and events to form state machines.  State is tracked in the back-end, clients are assumed to be in the correct state.  A more complex version should allow for clients to communicate their actual state back to the back-end.
