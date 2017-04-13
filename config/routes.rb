@@ -14,7 +14,13 @@ Rails.application.routes.draw do
       end
       resources :states
       resources :workflows
-      resources :controllers
+      resources :controllers do
+        collection do
+          get 'connections', action: :connections
+          get 'connections/test', action: :connections_test
+          get 'connections/details', action: :connections_details
+        end
+      end
       resources :events
     end
   end
