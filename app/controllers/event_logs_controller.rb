@@ -1,6 +1,9 @@
 class EventLogsController < ApplicationController
+  include Helper
   def index
-    render json: EventLog.reverse_order(:request_dt).all, status: :ok
+    event_log = EventLog.reverse_order(:request_dt).all
+    event_log.map { |el| el[:age] = age(el[:request_dt]) }
+    render json: event_log, status: :ok
   end
 
   def create
@@ -20,6 +23,8 @@ class EventLogsController < ApplicationController
   end
 
   def get_count
-    render json: EventLog.reverse_order(:request_dt).limit(params[:event_count]).all, status: :ok
+    event_log = EventLog.reverse_order(:request_dt).limit(params[:event_count]).all
+    event_log.map { |el| el[:age] = age(el[:request_dt]) }
+    render json: event_log, status: :ok
   end
 end
